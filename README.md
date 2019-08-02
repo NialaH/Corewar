@@ -1,30 +1,30 @@
 # Corewar
-Réalisation d'un compilateur de RedCode (Assembleur) et d'une Virtual Machine qui interprète les fichiers '".cor" et les exécutes.  
+Réalisation d'un compilateur de RedCode (Assembleur) et d'une Virtual Machine qui interprète les fichiers '".cor" et les exécute.  
 ![](anim.gif)
 
 VM : Machine Virtuelle
 -
-- L'arene est constitue de 4096 octets;
-- L'arene est circulaire;
-- Chaque instruction s'execute uniquement a la fin de son cycle(et attends toute sa durée);
-- Les processus s'executent sequentiellement et dans le meme espace memoire, du dernier née au premier née;
+- L'arène est constituée de 4096 octets;
+- L'arène est circulaire;
+- Chaque instruction s'execute uniquement a la fin de son nombre de cycle (et est en attente pendant sa durée);
+- Les processus s'executent sequentiellement et dans le même espace mémoire.
 
 Champions :
 -
-- Le bytecode des champions est généré grace a l'asm qui traduit l'assembleur des .s en .cor.
-- Le bytecode est un ensemble d'instruction, suivis de ses parametres, qui defini donc les champions.
+- Le bytecode des champions est généré grace a l'Assembleur qui traduit le RedCode des .s en .cor.
+- Le bytecode est un ensemble d'instructions, avec paramètres, qui defini donc les champions.
 
 Processus :
 -
 Un processus dipose de :<br/>
-- Un Live : Une valeur qui designe si le processus est vivant.
-- Un PC : Registre special qui contient l'adresse dans la memoire de la VM.<br/>
-- Un Carry : Un flag qui vaut 1 si l'opperation a reussie. (Si le resultat de l'operation == 0)<br/>
-- 16 Registres : Chaque fait REG_SIZE (4) octets. A l'initialisation de l'arene, le Carry, le Live, et les Registres sont mis a 0, hormis le premier registre, ou est contenu le numero du joueur. A la copie d'un processus (fork, lfork), le Carry, le Live et les registres sont copié.
+- Un Live : Une valeur qui indique que le processus est vivant.
+- Un PC : Registre special qui contient l'adresse du curseur du programme dans la memoire de la VM.<br/>
+- Un Carry : Un flag qui vaut 1 si l'opperation précedente a reussie. (Si le resultat de l'operation == 0)<br/>
+- 16 Registres : Chaque fait REG_SIZE (4) octets. A l'initialisation de l'arene, le Carry, le Live, et les Registres sont mis a 0, hormis le premier registre, où est contenu le numero du joueur. A la copie d'un processus (fork, lfork), le Carry, le Live et les registres sont copiés.
 
-Regles :
+Règles :
 -
-- Quand il n'y a plus de processus en vie, la partie est finie, et le gagnant est le dernier joueur rapporté en vie (Live);
+- Quand il n'y a plus de processus en vie, la partie est finie, et le gagnant est le dernier joueur à avoir executer l'instruction Live;
 - Tous les CYCLE_TO_DIE, la machine verifie que chaque processus est vivant (Live). Si le Live est a 0, le processus est detruit. Sinon, il reste en vie et son Live est mis a 0.
 - La decrementation de CYCLE_TO_DIE est de CYCLE_DELTA (-50). Elle s'effectue lorsque CYCLE_TO_DIE cycle est passé et qu'il y a eu NBR_LIVE (21) exectute par l'ensemble des processus durant le CYCLE_TO_DIE. Sinon on augmente CHECK de 1. Lorsque CHECK atteint MAX_CHECKS, la VM execute une verification des processus.;
 
